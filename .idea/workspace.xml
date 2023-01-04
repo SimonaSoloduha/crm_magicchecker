@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="563d15a8-75e2-4107-be39-8b8f082ed2d4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/web/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/web/index.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +89,7 @@
       <option name="presentableId" value="Default" />
       <updated>1672759940414</updated>
       <workItem from="1672759954058" duration="1826000" />
-      <workItem from="1672816337272" duration="378000" />
+      <workItem from="1672816337272" duration="1029000" />
     </task>
     <task id="LOCAL-00001" summary="fix 2">
       <created>1672761734247</created>
@@ -97,7 +98,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672761734247</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="fix 3 test page">
+      <created>1672816907157</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1672816907157</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -105,6 +113,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix 2" />
+    <MESSAGE value="fix 3 test page" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix 3 test page" />
   </component>
 </project>
