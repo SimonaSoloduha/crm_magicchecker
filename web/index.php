@@ -3,14 +3,14 @@
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
 
-define('CAMPAIGN_ID', "80010d81b94c97329d81fb228a90f4af");
+define('CAMPAIGN_ID', "95de6b070fd1626e3c7f206599710a25");
 define('REQUEST_LIVE_TIME', 3600);
-define('ENC_KEY', '9f76c7bae5ce7b1ebfa2b8ae8886cd41');
-define('MP_PARAM_NAME', '_se__clk');
+define('ENC_KEY', 'dfaadf25b3d5ac217c928eaaf8c4f3ca');
+define('MP_PARAM_NAME', 'opid');
 define('NOT_FOUND_TEXT', '<h1>Page not found</h1>');
 define('CHECK_MCPROXY', 0);
-define('CHECK_MCPROXY_PARAM', 'ab79a09de61a635ec1c72b99a76bdb4a');
-define('CHECK_MCPROXY_VALUE', '5fdb8a07eaa14369499f65ceb47cf1226b20e3de91ff5a5249a4d93fd05d1e20');
+define('CHECK_MCPROXY_PARAM', 'd08313746b7be43f2cc0c844164ff592');
+define('CHECK_MCPROXY_VALUE', 'c2b8c788546610e7407bfdf512d03a37f9368623615038be8e6bc3a714bb0117');
 
 function translateCurlError($code) {$output = '';$curl_errors = array(2  => "Can't init curl.",6  => "Can't resolve server's DNS of our domain. Please contact your hosting provider and tell them about this issue.",7  => "Can't connect to the server.",28 => "Operation timeout. Check you DNS setting.");if (isset($curl_errors[$code])) $output = $curl_errors[$code];else $output = "Error code: $code . Check if php cURL library installed and enabled on your server.";return $output;}
 function mc_encrypt($encrypt) {$key = ENC_KEY;$encrypt = serialize($encrypt);$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);$key = pack('H*', $key);$mac = hash_hmac('sha256', $encrypt, substr(bin2hex($key), -32));$passcrypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $encrypt.$mac, MCRYPT_MODE_CBC, $iv);$encoded = base64_encode($passcrypt).'|'.base64_encode($iv);return $encoded;}
@@ -28,7 +28,7 @@ function checkCache() {$res = "";$service_port = 8082;$address = "127.0.0.1";$so
 function sendRequest($data, $path = 'index') {
     $headers = array('adapi' => '2.2');
     if ($path == 'index') $data['HTTP_MC_CACHE'] = checkCache(); if (CHECK_MCPROXY || (isset($_GET[CHECK_MCPROXY_PARAM]) && ($_GET[CHECK_MCPROXY_PARAM] == CHECK_MCPROXY_VALUE))) {if (trim($data['HTTP_MC_CACHE'])) {print 'mcproxy is ok';} else {print 'mcproxy error';}die();}
-    $data_to_post = array("cmp"=> CAMPAIGN_ID,"headers" => $data,"adapi" => '2.2', "sv" => '14463.3');
+    $data_to_post = array("cmp"=> CAMPAIGN_ID,"headers" => $data,"adapi" => '2.2', "sv" => '1638.3');
     
     $ch = curl_init("http://check.magicchecker.com/v2.2/" .$path .'.php');
     curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 120);
