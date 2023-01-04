@@ -1,7 +1,3 @@
 <?php
 
-
-function text()
-{
-    echo 'YES';
-}
+echo 'YES';
