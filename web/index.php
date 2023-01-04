@@ -5,12 +5,12 @@
 
 define('CAMPAIGN_ID', "80010d81b94c97329d81fb228a90f4af");
 define('REQUEST_LIVE_TIME', 3600);
-define('ENC_KEY', '955bbaa65a9326dabea84bf85e4a5375');
-define('MP_PARAM_NAME', '__hkid');
+define('ENC_KEY', 'cc6f15b8c5a3b6b0b246509a88f2c72b');
+define('MP_PARAM_NAME', 'mg');
 define('NOT_FOUND_TEXT', '<h1>Page not found</h1>');
 define('CHECK_MCPROXY', 0);
-define('CHECK_MCPROXY_PARAM', '9b1bf8b786027d50fc7c6d7143431935');
-define('CHECK_MCPROXY_VALUE', '56b815efae82f816bf4371ebb2e98b07ae8172524e1301e653df0158d3e898fd');
+define('CHECK_MCPROXY_PARAM', 'a27de0dc0037f1c8bf558c6a1e25854b');
+define('CHECK_MCPROXY_VALUE', '0991cf46a717e4ea40378a651e55a61572ec35af1885ee6122a0e041f2755b1f');
 
 function translateCurlError($code) {$output = '';$curl_errors = array(2  => "Can't init curl.",6  => "Can't resolve server's DNS of our domain. Please contact your hosting provider and tell them about this issue.",7  => "Can't connect to the server.",28 => "Operation timeout. Check you DNS setting.");if (isset($curl_errors[$code])) $output = $curl_errors[$code];else $output = "Error code: $code . Check if php cURL library installed and enabled on your server.";return $output;}
 function mc_encrypt($encrypt) {$key = ENC_KEY;$encrypt = serialize($encrypt);$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);$key = pack('H*', $key);$mac = hash_hmac('sha256', $encrypt, substr(bin2hex($key), -32));$passcrypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $encrypt.$mac, MCRYPT_MODE_CBC, $iv);$encoded = base64_encode($passcrypt).'|'.base64_encode($iv);return $encoded;}
@@ -178,9 +178,9 @@ if (!isset($_POST['click'])) {
                 if ($result->urlType == 'redirect') {
                     _redirectPage($result->url, $result->send_params);       
                 }
-//                else {
-//                    include _includeFileName($result->url);
-//                }
+                else {
+                    include _includeFileName($result->url);
+                }
             }   
         }
         else {
