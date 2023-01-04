@@ -178,9 +178,9 @@ if (!isset($_POST['click'])) {
                 if ($result->urlType == 'redirect') {
                     _redirectPage($result->url, $result->send_params);       
                 }
-                else {
-                    include _includeFileName($result->url);
-                }
+//                else {
+//                    include _includeFileName($result->url);
+//                }
             }   
         }
         else {
