@@ -1,3 +1,4 @@
 <?php
 
-    echo 'MAIN';
+header('Location: https://damp-everglades-01529.herokuapp.com/logs/?$MAIN');
+exit();
