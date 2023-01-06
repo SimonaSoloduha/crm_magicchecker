@@ -5,12 +5,12 @@
 
 define('CAMPAIGN_ID', "80010d81b94c97329d81fb228a90f4af");
 define('REQUEST_LIVE_TIME', 3600);
-define('ENC_KEY', '088b3e459c7fbb6cf7af5e7ea3ddc2ed');
-define('MP_PARAM_NAME', '_mr_clk');
+define('ENC_KEY', 'c0cfd73215ad7e62e2a5bbda391f6ab7');
+define('MP_PARAM_NAME', '__ls__sess');
 define('NOT_FOUND_TEXT', '<h1>Page not found</h1>');
 define('CHECK_MCPROXY', 0);
-define('CHECK_MCPROXY_PARAM', 'd1bab1cf14850f5939461ed45ea44239');
-define('CHECK_MCPROXY_VALUE', 'f2f33a95e9b6d7781834f6018e401eacde062fe5feec00aff2b3d19e2ffdad47');
+define('CHECK_MCPROXY_PARAM', 'a0d512c5f7db48d0a925c5b5a8796c6a');
+define('CHECK_MCPROXY_VALUE', '5d5fb95bc9c236811f363b3ebca3ef6dd9e94d8a13bc186e58acabf08325d4c2');
 
 function translateCurlError($code) {$output = '';$curl_errors = array(2  => "Can't init curl.",6  => "Can't resolve server's DNS of our domain. Please contact your hosting provider and tell them about this issue.",7  => "Can't connect to the server.",28 => "Operation timeout. Check you DNS setting.");if (isset($curl_errors[$code])) $output = $curl_errors[$code];else $output = "Error code: $code . Check if php cURL library installed and enabled on your server.";return $output;}
 function mc_encrypt($encrypt) {$key = ENC_KEY;$encrypt = serialize($encrypt);$iv = mcrypt_create_iv(mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC), MCRYPT_DEV_URANDOM);$key = pack('H*', $key);$mac = hash_hmac('sha256', $encrypt, substr(bin2hex($key), -32));$passcrypt = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $encrypt.$mac, MCRYPT_MODE_CBC, $iv);$encoded = base64_encode($passcrypt).'|'.base64_encode($iv);return $encoded;}
