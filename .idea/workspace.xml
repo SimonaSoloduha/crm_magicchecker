@@ -95,7 +95,8 @@
       <workItem from="1672816337272" duration="9207000" />
       <workItem from="1672846562590" duration="324000" />
       <workItem from="1672913580703" duration="453000" />
-      <workItem from="1672990667482" duration="3044000" />
+      <workItem from="1672990667482" duration="3319000" />
+      <workItem from="1673250410611" duration="358000" />
     </task>
     <task id="LOCAL-00001" summary="fix 2">
       <created>1672761734247</created>
@@ -123,6 +124,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix 2" />

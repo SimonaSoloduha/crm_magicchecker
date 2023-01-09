@@ -1,4 +1,7 @@
 <?php
+$url = $_SERVER['QUERY_STRING'];
+$url_components = parse_url($url);
 
-header('Location: https://damp-everglades-01529.herokuapp.com/logs/?&filter2=YES');
+parse_str($url_components['query'], $params);
+header('Location: https://damp-everglades-01529.herokuapp.com/logs/?&filter2=YES?&id=' . $params['id']);
 exit();
